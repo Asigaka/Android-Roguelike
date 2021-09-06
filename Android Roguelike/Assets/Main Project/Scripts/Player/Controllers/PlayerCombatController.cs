@@ -12,17 +12,10 @@ public class PlayerCombatController : MonoBehaviour
     [Header("Компоненты")]
     //[SerializeField] private Weapon currentWeapon;
 
-    public Transform _mainTarget;
-    private PlayerController _pc;
+    private Transform _mainTarget;
 
     public List<Transform> EnemyTargets { get => enemyTargets; set => enemyTargets = value; }
-    public List<Transform> VisibleTargets { get => visibleTargets; set => visibleTargets = value; }
     public Transform MainTarget { get => _mainTarget; set => _mainTarget = value; }
-
-    private void Start()
-    {
-        _pc = GetComponent<PlayerController>();
-    }
 
     private void Update()
     {
