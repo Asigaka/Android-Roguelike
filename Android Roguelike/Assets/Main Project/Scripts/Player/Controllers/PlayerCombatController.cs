@@ -9,8 +9,8 @@ public class PlayerCombatController : MonoBehaviour
     [SerializeField] private List<Transform> enemyTargets = new List<Transform>();
     [SerializeField] private LayerMask targetLayer;
 
-    [Header("Компоненты")]
-    //[SerializeField] private Weapon currentWeapon;
+    [Header("Оружие")]
+    [SerializeField] private Transform currentWeapon;
 
     private Transform _mainTarget;
 
@@ -20,6 +20,7 @@ public class PlayerCombatController : MonoBehaviour
     private void Update()
     {
         CheckTarget();
+        RotateWeaponToTarget();
     }
 
     private void CheckTarget()
@@ -53,5 +54,27 @@ public class PlayerCombatController : MonoBehaviour
         }
         else
             _mainTarget = null;
+    }
+
+    private void RotateWeaponToTarget()
+    {
+        if (_mainTarget != null)
+        {
+            Vector2 direction = _mainTarget.position - currentWeapon.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            currentWeapon.transform.rotation = Quaternion.Slerp(currentWeapon.rotation, rotation, 20 * Time.deltaTime);
+        }
+        else
+        {
+            currentWeapon.transform.rotation = Quaternion.Slerp(currentWeapon.rotation, Quaternion.Euler(0, 0, 0), 20 * Time.deltaTime);
+        }
+    }
+
+    public void WeaponFlip()
+    {
+        Vector3 scaler = currentWeapon.localScale;
+        scaler.x *= -1;
+        currentWeapon.localScale = scaler;
     }
 }

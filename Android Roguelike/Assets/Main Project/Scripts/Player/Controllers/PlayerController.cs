@@ -54,6 +54,8 @@ public class PlayerController : MonoBehaviour
                 Flip();
             else if (direction.x > 0 && _isFacingRight)
                 Flip();
+
+            _combatController.WeaponFlip();
         }
     }
 
