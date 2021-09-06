@@ -524,9 +524,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d0db0ee5e1ca94f9945f3106f28ccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1901992082}
+  player: {fileID: 1901992082}
   offset: {x: 0, y: 0, z: -10}
-  smoothFactor: 8
+  smoothFactor: 0.5
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -554,7 +554,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1625,7 +1625,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 1
-  rb: {fileID: 1901992084}
+  _mainTarget: {fileID: 0}
 --- !u!4 &2003655702 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3252025622910967035, guid: 06f225d8c4eab6c42b0d88ca9090f0fa, type: 3}

@@ -11,12 +11,13 @@ public class PlayerCombatController : MonoBehaviour
 
     [Header("Компоненты")]
     //[SerializeField] private Weapon currentWeapon;
-    [SerializeField] private Rigidbody2D rb;
 
-    private Transform _mainTarget;
+    public Transform _mainTarget;
     private PlayerController _pc;
 
     public List<Transform> EnemyTargets { get => enemyTargets; set => enemyTargets = value; }
+    public List<Transform> VisibleTargets { get => visibleTargets; set => visibleTargets = value; }
+    public Transform MainTarget { get => _mainTarget; set => _mainTarget = value; }
 
     private void Start()
     {
@@ -37,19 +38,23 @@ public class PlayerCombatController : MonoBehaviour
                 RaycastHit2D hit = Physics2D.Linecast(transform.position, target.position, targetLayer);
 
                 if (hit.collider == null)
+                {
                     if (!visibleTargets.Contains(target))
                         visibleTargets.Add(target);
+                }
                 else
                     visibleTargets.Remove(target);
             }
 
-            visibleTargets.Sort(delegate (Transform t1, Transform t2)
-            {
-                return Vector3.Distance(t1.position, transform.position).CompareTo(Vector3.Distance(t2.position, transform.position));
-            });
-
             if (visibleTargets.Count > 0)
+            {
+                visibleTargets.Sort(delegate (Transform t1, Transform t2)
+                {
+                    return Vector3.Distance(t1.position, transform.position).CompareTo(Vector3.Distance(t2.position, transform.position));
+                });
+
                 _mainTarget = visibleTargets[0];
+            }
             else
                 _mainTarget = null;
         }
