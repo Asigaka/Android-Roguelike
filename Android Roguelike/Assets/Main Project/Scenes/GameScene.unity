@@ -2098,6 +2098,7 @@ MonoBehaviour:
   currentWeapon: {fileID: 43413563}
   firePoint: {fileID: 570194395}
   bulletPrefab: {fileID: 1083456599782188470, guid: 829ba6b03a51e9b499007da512b5f1da, type: 3}
+  _mainTarget: {fileID: 0}
 --- !u!4 &2003655702 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3252025622910967035, guid: 06f225d8c4eab6c42b0d88ca9090f0fa, type: 3}

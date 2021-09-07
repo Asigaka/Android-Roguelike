@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        _combatController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCombatController>();
+        _combatController = GetComponent<PlayerCombatController>();
     }
 
     private void FixedUpdate()
