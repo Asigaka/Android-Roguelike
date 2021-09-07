@@ -51,11 +51,15 @@ public class PlayerController : MonoBehaviour
             Vector2 direction = transform.position - _combatController.MainTarget.position;
 
             if (direction.x < 0 && !_isFacingRight)
+            {
+                _combatController.WeaponFlip();
                 Flip();
+            }
             else if (direction.x > 0 && _isFacingRight)
+            {
+                _combatController.WeaponFlip();
                 Flip();
-
-            _combatController.WeaponFlip();
+            }
         }
     }
 

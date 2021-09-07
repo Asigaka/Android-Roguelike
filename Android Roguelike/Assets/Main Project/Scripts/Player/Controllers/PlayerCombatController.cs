@@ -14,9 +14,9 @@ public class PlayerCombatController : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject bulletPrefab;
 
-    public Transform _mainTarget;
+    private Transform _mainTarget;
     private bool _canShoot = false;
-    private bool _isReloaded = true;
+    private bool _isReloaded = false;
     private float _localRateOfFireTimer = 0;
 
     public List<Transform> EnemyTargets { get => enemyTargets; set => enemyTargets = value; }
@@ -59,6 +59,8 @@ public class PlayerCombatController : MonoBehaviour
                 });
 
                 _mainTarget = visibleTargets[0];
+
+                Debug.DrawLine(firePoint.position, _mainTarget.position);
             }
             else
                 _mainTarget = null;
@@ -77,9 +79,7 @@ public class PlayerCombatController : MonoBehaviour
             currentWeapon.transform.rotation = Quaternion.Slerp(currentWeapon.rotation, rotation, 20 * Time.deltaTime);
         }
         else
-        {
             currentWeapon.transform.rotation = Quaternion.Slerp(currentWeapon.rotation, Quaternion.Euler(0, 0, 0), 20 * Time.deltaTime);
-        }
     }
 
     public void WeaponFlip()
@@ -93,7 +93,14 @@ public class PlayerCombatController : MonoBehaviour
     {
         if (_isReloaded)
         {
-            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            Vector2 directionWithoutSpread = _mainTarget.position - firePoint.transform.position;
+            Vector2 directionWithSpread = directionWithoutSpread + new Vector2(Random.Range(-0.75f, 0.75f), Random.Range(-0.75f, 0.75f));
+
+            GameObject currentBullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+
+            //currentBullet.transform.right = directionWithSpread.normalized;
+            currentBullet.GetComponent<Rigidbody2D>().AddForce(directionWithSpread.normalized * 10, ForceMode2D.Impulse);
+
             _isReloaded = false;
         }
     }
@@ -107,7 +114,7 @@ public class PlayerCombatController : MonoBehaviour
         if (_localRateOfFireTimer <= 0 && !_isReloaded)
         {
             _isReloaded = true;
-            _localRateOfFireTimer = 1;
+            _localRateOfFireTimer = 0.2f;
         }
         else
         {
