@@ -11,8 +11,13 @@ public class PlayerCombatController : MonoBehaviour
 
     [Header("Оружие")]
     [SerializeField] private Transform currentWeapon;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private GameObject bulletPrefab;
 
-    private Transform _mainTarget;
+    public Transform _mainTarget;
+    private bool _canShoot = false;
+    private bool _isReloaded = true;
+    private float _localRateOfFireTimer = 0;
 
     public List<Transform> EnemyTargets { get => enemyTargets; set => enemyTargets = value; }
     public Transform MainTarget { get => _mainTarget; set => _mainTarget = value; }
@@ -21,6 +26,12 @@ public class PlayerCombatController : MonoBehaviour
     {
         CheckTarget();
         RotateWeaponToTarget();
+
+        if (_canShoot)
+            Shoot();
+
+        if (!_isReloaded)
+            Reload();
     }
 
     private void CheckTarget()
@@ -76,5 +87,32 @@ public class PlayerCombatController : MonoBehaviour
         Vector3 scaler = currentWeapon.localScale;
         scaler.x *= -1;
         currentWeapon.localScale = scaler;
+    }
+
+    private void Shoot()
+    {
+        if (_isReloaded)
+        {
+            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            _isReloaded = false;
+        }
+    }
+
+    public void ShootDown() => _canShoot = true;
+
+    public void ShootUp() => _canShoot = false;
+
+    private void Reload()
+    {
+        if (_localRateOfFireTimer <= 0 && !_isReloaded)
+        {
+            _isReloaded = true;
+            _localRateOfFireTimer = 1;
+        }
+        else
+        {
+            _isReloaded = false;
+            _localRateOfFireTimer -= Time.deltaTime;
+        }
     }
 }
